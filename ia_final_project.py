@@ -1,10 +1,10 @@
-"""APRENDIZAGEM SUPERVISIONADA:
-CUSTOMER SHOPPING TRENDS
-Componente Curricular: Inteligência Artificial
-Professor(a): Felipe Grando
-Acadêmico(a): Matheus Vieira Santos"""
+#APRENDIZAGEM SUPERVISIONADA:
+#CUSTOMER SHOPPING TRENDS
+#Componente Curricular: Inteligência Artificial
+#Professor(a): Felipe Grando
+#Acadêmico(a): Matheus Vieira Santos
 
-"""# Imports"""
+# Imports
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -20,43 +20,37 @@ import warnings
 from sklearn import metrics
 warnings.filterwarnings('ignore')
 
-"""# Importing dataset"""
+# Importing dataset
 
 colnames = [ 'Customer ID',	'Age',	'Gender',	'Item Purchased',	'Category',	'Purchase Amount (USD)',	'Location',	'Size',	'Color',	'Season',	'Review Rating',
             'Subscription Status',	'Shipping Type',	'Discount Applied',	'Promo Code Used',	'Previous Purchases',	'Payment Method',	'Frequency of Purchases' ];
 df = pd.read_csv('shopping_trends.csv', names=colnames, header=None)
 
-"""# Showing dataset"""
+# Showing dataset
 
 df.head(48842)
 
-"""# Data cleaning
+# Data cleaning
 
 ## Dropping useless feature
-"""
 
 del df['Customer ID'];
 del df['Item Purchased'];
 del df['Subscription Status'];
 del df['Promo Code Used'];
 
-"""## Checking if data needs to be cleaned
-
-
-"""
+## Checking if data needs to be cleaned
 
 print('How many NaN values by attribute:')
 print(df.isnull().sum())
 print('How many 0 values by attribute:')
 print((df==0).sum())
 
-"""# Data transformation
+# Data transformation
 
 ## Reducing data information
-"""
 
 df = df[df['Category'] != 'Accessories']
-
 
 def categorize_color(color):
     light_colors = {'Beige', 'Cyan', 'Gold', 'Lavender', 'Peach', 'Pink', 'Silver', 'White', 'Yellow'}
@@ -72,7 +66,7 @@ def categorize_color(color):
 
 df['Color'] = df['Color'].apply(categorize_color)
 
-"""## Encoding categorical attributes as enum"""
+## Encoding categorical attributes as enum
 
 laben = pp.LabelEncoder()
 
@@ -132,11 +126,11 @@ laben.fit(df['Payment Method'])
 df['Payment Method'] = laben.transform(df['Payment Method'])
 print('\nPayment Method\n', laben.classes_)
 
-"""## Showing dataset transformed"""
+## Showing dataset transformed
 
 df.head(20)
 
-"""# Understanding my data"""
+# Understanding my data
 
 color = ['Accent', 'Accent_r', 'Blues', 'Blues_r', 'BrBG', 'BrBG_r', 'BuGn', 'BuGn_r', 'BuPu', 'BuPu_r', 'CMRmap', 'CMRmap_r', 'Dark2', 'Dark2_r', 'GnBu', 'GnBu_r', 'Greens', 'Greens_r', 'Greys', 'Greys_r', 'OrRd', 'OrRd_r', 'Oranges', 'Oranges_r', 'PRGn', 'PRGn_r', 'Paired', 'Paired_r', 'Pastel1', 'Pastel1_r', 'Pastel2', 'Pastel2_r', 'PiYG', 'PiYG_r', 'PuBu', 'PuBuGn', 'PuBuGn_r', 'PuBu_r', 'PuOr', 'PuOr_r', 'PuRd', 'PuRd_r', 'Purples', 'Purples_r', 'RdBu', 'RdBu_r', 'RdGy', 'RdGy_r', 'RdPu', 'RdPu_r', 'RdYlBu', 'RdYlBu_r', 'RdYlGn', 'RdYlGn_r', 'Reds', 'Reds_r', 'Set1', 'Set1_r', 'Set2', 'Set2_r', 'Set3', 'Set3_r', 'Spectral', 'Spectral_r', 'Wistia', 'Wistia_r', 'YlGn', 'YlGnBu', 'YlGnBu_r', 'YlGn_r', 'YlOrBr', 'YlOrBr_r', 'YlOrRd', 'YlOrRd_r', 'afmhot', 'afmhot_r', 'autumn', 'autumn_r', 'binary', 'binary_r', 'bone', 'bone_r', 'brg', 'brg_r', 'bwr', 'bwr_r', 'cividis', 'cividis_r', 'cool', 'cool_r', 'coolwarm', 'coolwarm_r', 'copper', 'copper_r', 'crest', 'crest_r', 'cubehelix', 'cubehelix_r', 'flag', 'flag_r', 'flare', 'flare_r', 'gist_earth', 'gist_earth_r', 'gist_gray', 'gist_gray_r', 'gist_heat', 'gist_heat_r', 'gist_ncar', 'gist_ncar_r', 'gist_rainbow', 'gist_rainbow_r', 'gist_stern', 'gist_stern_r', 'gist_yarg', 'gist_yarg_r', 'gnuplot', 'gnuplot2', 'gnuplot2_r', 'gnuplot_r', 'gray', 'gray_r', 'hot', 'hot_r', 'hsv', 'hsv_r', 'icefire', 'icefire_r', 'inferno', 'inferno_r', 'jet', 'jet_r', 'magma', 'magma_r', 'mako', 'mako_r', 'nipy_spectral', 'nipy_spectral_r', 'ocean', 'ocean_r', 'pink', 'pink_r', 'plasma', 'plasma_r', 'prism', 'prism_r', 'rainbow', 'rainbow_r', 'rocket', 'rocket_r', 'seismic', 'seismic_r', 'spring', 'spring_r', 'summer', 'summer_r', 'tab10', 'tab10_r', 'tab20', 'tab20_r', 'tab20b', 'tab20b_r', 'tab20c', 'tab20c_r', 'terrain', 'terrain_r', 'turbo', 'turbo_r', 'twilight', 'twilight_r', 'twilight_shifted', 'twilight_shifted_r', 'viridis', 'viridis_r', 'vlag', 'vlag_r', 'winter', 'winter_r']
 
@@ -149,7 +143,7 @@ plt.title("Attribute Correlation Heat Map",fontsize = 16)
 plt.tight_layout(pad=0.5)
 plt.show()
 
-"""# Data normalization"""
+# Data normalization
 
 X = df.drop(columns=['Category'])
 y = df['Category']
@@ -169,7 +163,7 @@ colnames = ['Age',
 scaler = pp.MinMaxScaler()
 X[colnames] = scaler.fit_transform(X[colnames])
 
-"""# Spliting dataset into train and test"""
+# Spliting dataset into train and test
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=145)
 
@@ -182,12 +176,12 @@ print("After:")
 print("0: ",(y_train==0).sum())
 print("1: ",(y_train==1).sum())
 
-"""# Using random forest"""
+# Using random forest
 
 clf = RandomForestClassifier(max_depth=20, min_samples_leaf=1, min_samples_split=2, n_estimators=250)
 clf.fit(X_train, y_train)
 
-"""# Metrics"""
+# Metrics
 
 y_pred = clf.predict(X_test)
 
